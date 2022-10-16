@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { v4 as uuidv4 } from 'uuid';
+import TableHead from "./TableHead";
 
 export default function Table(props) {
     const [data, setData] = useState([])
@@ -19,16 +20,16 @@ export default function Table(props) {
             [...data].sort((a, b) => {
                 if (a[e] < b[e]) {
                     if (sortState[e] === "sort") {
-                        return -1
-                    } else {
                         return 1
+                    } else {
+                        return -1
                     }
                 }
                 if (a[e] > b[e]) {
                     if (sortState[e] === "sort") {
-                        return 1
-                    } else {
                         return -1
+                    } else {
+                        return 1
                     }
                 }
                 return 0;
@@ -37,12 +38,12 @@ export default function Table(props) {
         let array = []
         props.columns.map(row => {
             if (row.name === e) {
-                if(sortState[e] === "sort") {
+                if (sortState[e] === "sort") {
                     array[e] = "reverse"
-                }else {
+                } else {
                     array[e] = "sort"
                 }
-            }else {
+            } else {
                 array[row.name] = "default"
             }
         })
@@ -70,22 +71,12 @@ export default function Table(props) {
             })
     }, [])
 
-
-
     return (
-        <>
-            <table className="w-full">
-                <thead>
-                    <tr>
-                        {props.columns.map(e =>
-                            <th key={e.name} className="text-left" onClick={() => sort(e.name)}>{e.name}</th>
-                        )}
-                    </tr>
-                </thead>
-                <tbody>
-                    {data ? data.map(e => <tr key={uuidv4()}>{props.columns.map(elt => <td key={e[elt.name] + '-' + e.id}>{e[elt.name]}</td>)}</tr>) : null}
-                </tbody>
-            </table>
-        </>
+        <table className="w-full">
+            <TableHead sort={sort} columns={props.columns} sortState={sortState} />
+            <tbody>
+                {data ? data.map(e => <tr key={uuidv4()}>{props.columns.map(elt => <td key={e[elt.name] + '-' + e.id}>{e[elt.name]}</td>)}</tr>) : null}
+            </tbody>
+        </table>
     )
 }
