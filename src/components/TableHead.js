@@ -13,7 +13,8 @@ export default function TableHead(props) {
     }
     return (
         <thead>
-            <tr>
+            <tr className="bg-gray-800 text-white">
+            <th></th>
                 {props.columns.map(e =>
                     <th key={e.name} onClick={() => props.sort(e.name)}>
                         <div className="flex justify-between pr-5 cursor-pointer">
