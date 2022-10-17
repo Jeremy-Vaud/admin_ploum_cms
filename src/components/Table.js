@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { v4 as uuidv4 } from 'uuid';
 import TableHead from "./TableHead";
+import TableRow from "./TableRow";
 
 export default function Table(props) {
     const [data, setData] = useState([])
@@ -75,7 +76,7 @@ export default function Table(props) {
         <table className="w-full">
             <TableHead sort={sort} columns={props.columns} sortState={sortState} />
             <tbody>
-                {data ? data.map(e => <tr key={uuidv4()}>{props.columns.map(elt => <td key={e[elt.name] + '-' + e.id}>{e[elt.name]}</td>)}</tr>) : null}
+                {data ? data.map(e => <TableRow key={uuidv4()} data={e} columns={props.columns} />) : null}
             </tbody>
         </table>
     )
