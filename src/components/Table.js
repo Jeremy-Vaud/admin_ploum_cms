@@ -52,7 +52,7 @@ export default function Table(props) {
     }
 
     useEffect(() => {
-        fetch('http://localhost:80/backend_ploum_cms/admin/api.php?' + props.get)
+        fetch('http://localhost:80/backend_ploum_cms/admin/api.php?table=' + props.table + '&get=all')
             .then((response) => {
                 if (response.status === 404) {
                     throw new Error('not found')
@@ -76,7 +76,7 @@ export default function Table(props) {
         <table className="w-full">
             <TableHead sort={sort} columns={props.columns} sortState={sortState} />
             <tbody>
-                {data ? data.map(e => <TableRow key={uuidv4()} data={e} columns={props.columns} />) : null}
+                {data ? data.map(e => <TableRow key={uuidv4()} table={props.table} data={e} columns={props.columns} />) : null}
             </tbody>
         </table>
     )

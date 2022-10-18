@@ -9,7 +9,7 @@ export default function PageUsers() {
     return (
         <>
             <h1 className="text-2xl text-center mb-6">Utilisateurs</h1>
-            <Table get="table=user" columns={columns} />
+            <Table table="user" columns={columns} />
         </>
     )
 }
