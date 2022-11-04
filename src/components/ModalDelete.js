@@ -2,27 +2,31 @@ import { useState } from "react"
 import trash from "../icons/trash-can-solid.svg"
 
 export default function ModalDelete(props) {
-    const [visiblity,setVisibility] = useState("hidden")
+    const [visiblity, setVisibility] = useState("hidden")
     function show() {
         setVisibility("")
     }
-    
-    
+
     function hide() {
         setVisibility("hidden")
     }
 
     function deleteById() {
-        fetch('http://localhost:80/backend_ploum_cms/admin/api.php?table=' + props.table+'&delete=' + props.id)
+        fetch('http://localhost:80/backend_ploum_cms/admin/api.php', {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: 'DELETE',
+            body: JSON.stringify(props)
+        })
             .then((response) => {
                 if (response.status === 404) {
                     throw new Error('not found')
                 } else if (!response.ok) {
                     throw new Error('response not ok')
+                } else {
+                    props.deleteRow(props.id)
                 }
-            })
-            .then((result) => {
-                window.location.reload(false);
             })
             .catch((e) => {
                 console.log(e.message)

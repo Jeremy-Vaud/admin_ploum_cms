@@ -7,7 +7,7 @@ export default function TableRow(props) {
         <tr>
             <td className='p-3'>
             <button><img src={edit} className='w-[15px} h-[15px] mr-5'/></button>
-                <ModalDelete table={props.table} id={props.data.id} />            
+                <ModalDelete table={props.table} id={props.data.id} deleteRow={props.deleteRow}/>            
             </td>
             {props.columns.map(column => <td key={uuidv4()}>{props.data[column.name]}</td>)}    
         </tr>       

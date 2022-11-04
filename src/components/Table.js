@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react"
-import { v4 as uuidv4 } from 'uuid';
-import TableHead from "./TableHead";
-import TableRow from "./TableRow";
+import { v4 as uuidv4 } from 'uuid'
+import TableHead from "./TableHead"
+import TableRow from "./TableRow"
+import ModalInsert from "./ModalInsert"
 
 export default function Table(props) {
     const [data, setData] = useState([])
-    const [error, setError] = useState(true)
     const [sortState, setSortState] = useState([])
 
 
@@ -51,8 +51,22 @@ export default function Table(props) {
         setSortState(array)
     }
 
+    function insert(line) {
+        setData([...data, line])
+    }
+
+    function deleteRow(id) {
+        let array = []
+        data.map((e) => {
+            if(e.id !== id) {
+                array.push(e)
+            }
+        })
+        setData(array)
+    }
+
     useEffect(() => {
-        fetch('http://localhost:80/backend_ploum_cms/admin/api.php?table=' + props.table + '&get=all')
+        fetch('http://localhost:80/backend_ploum_cms/admin/api.php?table=' + props.table + '&id=all')
             .then((response) => {
                 if (response.status === 404) {
                     throw new Error('not found')
@@ -62,22 +76,25 @@ export default function Table(props) {
                 return response.json()
             })
             .then((result) => {
-                setError(false)
                 setData(result)
                 initSortState()
             })
             .catch((e) => {
-                setError(true)
                 console.log(e.message)
             })
     }, [])
 
     return (
-        <table className="w-full">
-            <TableHead sort={sort} columns={props.columns} sortState={sortState} />
-            <tbody>
-                {data ? data.map(e => <TableRow key={uuidv4()} table={props.table} data={e} columns={props.columns} />) : null}
-            </tbody>
-        </table>
+        <>
+            <div>
+                <ModalInsert form={props.form} table={props.table} insert={insert} />
+            </div>
+            <table className="w-full">
+                <TableHead sort={sort} columns={props.columns} sortState={sortState} deleteRow={deleteRow} />
+                <tbody>
+                    {data ? data.map(e => <TableRow key={uuidv4()} table={props.table} data={e} columns={props.columns} deleteRow={deleteRow}/>) : null}
+                </tbody>
+            </table>
+        </>
     )
 }
