@@ -15,12 +15,16 @@ export default function ModalInsert(props) {
         setVisibility("hidden")
     }
 
-    useEffect(() => {
+    function reset() {
         let array = [];
         props.form.map((e) => {
             array.push({key:uuidv4(),name:e.name,type:e.type,warning:"",value:""})
         })
-        setInputs(array)      
+        setInputs(array)  
+    }
+
+    useEffect(() => {
+        reset()     
     },[])
 
     function handleChange(evt) {
@@ -64,6 +68,7 @@ export default function ModalInsert(props) {
             .then((result) => {
                 if ((result.status === "success")) {
                     hide()
+                    reset()
                     props.insert(result.data)
                 } else if (result.status === "invalid") {
                     setWarnings(result.data)
