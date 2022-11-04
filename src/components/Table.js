@@ -15,7 +15,6 @@ export default function Table(props) {
         setSortState(array)
     }
 
-
     function sort(e) {
         setData(
             [...data].sort((a, b) => {
@@ -52,6 +51,7 @@ export default function Table(props) {
     }
 
     function insert(line) {
+        line.id = parseInt(line.id)
         setData([...data, line])
     }
 
@@ -60,6 +60,18 @@ export default function Table(props) {
         data.map((e) => {
             if(e.id !== id) {
                 array.push(e)
+            }
+        })
+        setData(array)
+    }
+
+    function updateRow(response) {
+        let array = []
+        data.map((e) => {
+            if(e.id !== response.id) {
+                array.push(e)
+            }else{
+                array.push(response)
             }
         })
         setData(array)
@@ -92,7 +104,7 @@ export default function Table(props) {
             <table className="w-full">
                 <TableHead sort={sort} columns={props.columns} sortState={sortState} deleteRow={deleteRow} />
                 <tbody>
-                    {data ? data.map(e => <TableRow key={uuidv4()} table={props.table} data={e} columns={props.columns} deleteRow={deleteRow}/>) : null}
+                    {data ? data.map(e => <TableRow key={uuidv4()} table={props.table} data={e} columns={props.columns} deleteRow={deleteRow} formUpdate={props.formUpdate} updateRow={updateRow} />) : null}
                 </tbody>
             </table>
         </>
