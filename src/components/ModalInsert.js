@@ -82,7 +82,7 @@ export default function ModalInsert(props) {
 
     return (
         <>
-            <button onClick={show} className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded mb-4 text-white">Ajouter</button>
+            <button onClick={show} className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded text-white">Ajouter</button>
             <div className={visibility}>
                 <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] p-10 z-20 bg-white w-[300px] md:w-[500px] max-h-[80%] overflow-auto">
                     <form id={formId} onSubmit={(e) => add(e)} method="post">

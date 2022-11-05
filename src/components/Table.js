@@ -3,10 +3,12 @@ import { v4 as uuidv4 } from 'uuid'
 import TableHead from "./TableHead"
 import TableRow from "./TableRow"
 import ModalInsert from "./ModalInsert"
+import TableSearch from "./TableSearch"
 
 export default function Table(props) {
     const [data, setData] = useState([])
     const [sortState, setSortState] = useState([])
+    const [hiddenRows, setHiddenRows] = useState({})
 
 
     function initSortState() {
@@ -58,7 +60,7 @@ export default function Table(props) {
     function deleteRow(id) {
         let array = []
         data.map((e) => {
-            if(e.id !== id) {
+            if (e.id !== id) {
                 array.push(e)
             }
         })
@@ -68,13 +70,32 @@ export default function Table(props) {
     function updateRow(response) {
         let array = []
         data.map((e) => {
-            if(e.id !== response.id) {
+            if (e.id !== response.id) {
                 array.push(e)
-            }else{
+            } else {
                 array.push(response)
             }
         })
         setData(array)
+    }
+
+    function search(e) {
+        let json = {}
+        let val = e.target.value
+        data.map((row) => {
+            let find = false
+            props.columns.map((col) => {
+                if (row[col.name].indexOf(val) !== -1) {
+                    find = true;
+                }
+            })
+            if (find) {
+                json[row.id] = false
+            }else {
+                json[row.id] = true
+            }
+        })
+        setHiddenRows(json)
     }
 
     useEffect(() => {
@@ -98,13 +119,15 @@ export default function Table(props) {
 
     return (
         <>
-            <div>
+            <div className="flex justify-between items-center mb-4">
                 <ModalInsert form={props.form} table={props.table} insert={insert} />
+                <TableSearch search={search} />
             </div>
             <table className="w-full">
                 <TableHead sort={sort} columns={props.columns} sortState={sortState} deleteRow={deleteRow} />
                 <tbody>
-                    {data ? data.map(e => <TableRow key={uuidv4()} table={props.table} data={e} columns={props.columns} deleteRow={deleteRow} formUpdate={props.formUpdate} updateRow={updateRow} />) : null}
+                    {
+                    data ? data.map(e => <TableRow key={uuidv4()} table={props.table} data={e} columns={props.columns} deleteRow={deleteRow} formUpdate={props.formUpdate} updateRow={updateRow} hidden={hiddenRows[e.id]}/>) : null}
                 </tbody>
             </table>
         </>

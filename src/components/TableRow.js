@@ -3,6 +3,8 @@ import ModalDelete from './ModalDelete';
 import ModalUpdate from './ModalUpdate';
 
 export default function TableRow(props) {
+    if(!props.hidden) {
+
     return (
         <tr>
             <td className='p-3'>
@@ -12,4 +14,5 @@ export default function TableRow(props) {
             {props.columns.map(column => <td key={uuidv4()}>{props.data[column.name]}</td>)}    
         </tr>       
     )
+    }
 }
