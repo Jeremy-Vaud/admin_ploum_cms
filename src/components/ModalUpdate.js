@@ -104,7 +104,7 @@ export default function ModalUpdate(props) {
                         }
                     </form>
                     <div className="text-center">
-                        <button onClick={submit} className="px-5 py-2 bg-yellow-600 hover:bg-yellow-500 rounded mr-5">Ajouter</button>
+                        <button onClick={submit} className="px-5 py-2 bg-yellow-600 hover:bg-yellow-500 rounded mr-5">Modifier</button>
                         <button onClick={hide} className="px-5 py-2 bg-gray-300 hover:bg-gray-200 rounded">annuler</button>
                     </div>
                 </div>

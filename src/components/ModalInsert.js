@@ -89,7 +89,7 @@ export default function ModalInsert(props) {
                         {inputs.map(e => {
                             if(e.type === "checkbox") {
                                 return (
-                                    <FormCheckbox key={e.key} name={e.name} value={false} />
+                                    <FormCheckbox key={e.key} name={e.name} value={false} handleChange={handleChange}/>
                                 )
                             } else {
                                 return (
