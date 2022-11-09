@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 export default function FormCheckbox(props) {
-    [checked, setChecked] = useState(props.value)
+    const [checked, setChecked] = useState(props.value)
 
     function change(e) {
         setChecked(!checked)

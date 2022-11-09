@@ -4,6 +4,7 @@ import TableHead from "./TableHead"
 import TableRow from "./TableRow"
 import ModalInsert from "./ModalInsert"
 import TableSearch from "./TableSearch"
+import { urlApi } from "../settings"
 
 export default function Table(props) {
     const [data, setData] = useState([])
@@ -99,11 +100,14 @@ export default function Table(props) {
     }
 
     useEffect(() => {
-        fetch('http://localhost:80/backend_ploum_cms/admin/api.php?table=' + props.table + '&id=all')
+        fetch( urlApi+'?table=' + props.table + '&id=all')
             .then((response) => {
                 if (response.status === 404) {
                     throw new Error('not found')
-                } else if (!response.ok) {
+                } else if(response.status === 401) {
+                    props.logOut()
+                    throw new Error('Connection requise')
+                }else if (!response.ok) {
                     throw new Error('response not ok')
                 }
                 return response.json()
@@ -120,14 +124,14 @@ export default function Table(props) {
     return (
         <>
             <div className="flex justify-between items-center mb-4">
-                <ModalInsert form={props.form} table={props.table} insert={insert} />
+                <ModalInsert form={props.form} table={props.table} insert={insert} logOut={props.logOut}/>
                 <TableSearch search={search} />
             </div>
             <table className="w-full">
                 <TableHead sort={sort} columns={props.columns} sortState={sortState} deleteRow={deleteRow} />
                 <tbody>
                     {
-                    data ? data.map(e => <TableRow key={uuidv4()} table={props.table} data={e} columns={props.columns} deleteRow={deleteRow} formUpdate={props.formUpdate} updateRow={updateRow} hidden={hiddenRows[e.id]}/>) : null}
+                    data ? data.map(e => <TableRow key={uuidv4()} table={props.table} data={e} columns={props.columns} deleteRow={deleteRow} formUpdate={props.formUpdate} updateRow={updateRow} hidden={hiddenRows[e.id]} logOut={props.logOut}/>) : null}
                 </tbody>
             </table>
         </>

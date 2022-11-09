@@ -1,5 +1,6 @@
 import { useState } from "react"
 import trash from "../icons/trash-can-solid.svg"
+import { urlApi } from "../settings"
 
 export default function ModalDelete(props) {
     const [visiblity, setVisibility] = useState("hidden")
@@ -12,7 +13,7 @@ export default function ModalDelete(props) {
     }
 
     function deleteById() {
-        fetch('http://localhost:80/backend_ploum_cms/admin/api.php', {
+        fetch(urlApi, {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -22,6 +23,9 @@ export default function ModalDelete(props) {
             .then((response) => {
                 if (response.status === 404) {
                     throw new Error('not found')
+                } else if (response.status === 401) {
+                    props.logOut()
+                    throw new Error('Connection requise')
                 } else if (!response.ok) {
                     throw new Error('response not ok')
                 } else {

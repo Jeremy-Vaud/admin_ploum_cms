@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import edit from "../icons/pencil-solid.svg"
 import FormCheckbox from "./FormCheckbox"
 import FormInput from "./FormInput"
+import { urlApi } from "../settings"
 
 export default function ModalUpdate(props) {
     const [visibility, setVisibility] = useState("hidden")
@@ -61,12 +62,16 @@ export default function ModalUpdate(props) {
         })
         let data = {};
         formData.forEach((value, key) => data[key] = value);
-        fetch('http://localhost:80/backend_ploum_cms/admin/api.php', {
+        fetch(urlApi, {
             headers: {
                 "Content-Type": "application/json"
             }, method: 'PUT', body: JSON.stringify(data)
         })
             .then((response) => {
+                if (response.status === 401) {
+                    props.logOut()
+                    throw new Error('Connection requise')
+                }
                 return response.json()
             })
             .then((result) => {
