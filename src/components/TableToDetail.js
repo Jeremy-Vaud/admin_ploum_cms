@@ -4,14 +4,12 @@ import TableHead from "./TableHead"
 import TableRow from "./TableRow"
 import ModalInsert from "./ModalInsert"
 import TableSearch from "./TableSearch"
-import Loading from "./Loading"
 import { urlApi } from "../settings"
 
-export default function Table(props) {
+export default function TableToDetail(props) {
     const [data, setData] = useState([])
     const [sortState, setSortState] = useState([])
     const [hiddenRows, setHiddenRows] = useState({})
-    const [loading, setLoading] = useState("hidden")
 
 
     function initSortState() {
@@ -102,10 +100,8 @@ export default function Table(props) {
     }
 
     useEffect(() => {
-        setLoading("")
         fetch( urlApi+'?table=' + props.table + '&id=all')
             .then((response) => {
-                setLoading("hidden")
                 if (response.status === 404) {
                     throw new Error('not found')
                 } else if(response.status === 401) {
@@ -138,7 +134,6 @@ export default function Table(props) {
                     data ? data.map(e => <TableRow key={uuidv4()} table={props.table} data={e} columns={props.columns} deleteRow={deleteRow} formUpdate={props.formUpdate} updateRow={updateRow} hidden={hiddenRows[e.id]} logOut={props.logOut}/>) : null}
                 </tbody>
             </table>
-            <Loading loading={loading}/>
         </>
     )
 }

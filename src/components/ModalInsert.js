@@ -2,12 +2,17 @@ import { useState, useEffect } from "react"
 import { v4 as uuidv4 } from 'uuid'
 import FormCheckbox from "./FormCheckbox"
 import FormInput from "./FormInput"
+import FormTextarea from "./FormTextarea"
+import FormImage from "./FormImage"
+import Loading from "./Loading"
 import { urlApi } from "../settings"
+
 
 export default function ModalInsert(props) {
     const [visibility, setVisibility] = useState("hidden")
     const formId = useState(uuidv4())
     const [inputs, setInputs] = useState([])
+    const [loading, setLoading] = useState("hidden")
 
     function show() {
         setVisibility("")
@@ -57,14 +62,14 @@ export default function ModalInsert(props) {
         let form = document.getElementById(formId)
         let formData = new FormData(form)
         formData.append("table", props.table)
-        let data = {};
-        formData.forEach((value, key) => data[key] = value);
+        formData.append("action", "insert")
+        setLoading("")
         fetch(urlApi, {
-            headers: {
-                "Content-Type": "application/json"
-            }, method: 'POST', body: JSON.stringify(data)
+            method: 'POST',
+            body: formData
         })
             .then((response) => {
+                setLoading("hidden")
                 if (response.status === 401) {
                     props.logOut()
                     throw new Error('Connection requise')
@@ -87,7 +92,7 @@ export default function ModalInsert(props) {
 
     return (
         <>
-            <button onClick={show} className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded text-white">Ajouter</button>
+            <button onClick={show} className="px-4 py-2 bg-yellow-600 hover:bg-yellow-500 rounded">Ajouter</button>
             <div className={visibility}>
                 <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] p-10 z-20 bg-white w-[300px] md:w-[500px] max-h-[80%] overflow-auto">
                     <form id={formId} onSubmit={(e) => add(e)} method="post">
@@ -95,6 +100,14 @@ export default function ModalInsert(props) {
                             if (e.type === "checkbox") {
                                 return (
                                     <FormCheckbox key={e.key} name={e.name} value={false} handleChange={handleChange} />
+                                )
+                            } else if (e.type === "textarea") {
+                                return (
+                                    <FormTextarea key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} />
+                                )
+                            } else if (e.type === "file") {
+                                return (
+                                    <FormImage key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} />
                                 )
                             } else {
                                 return (
@@ -111,6 +124,7 @@ export default function ModalInsert(props) {
                 </div>
                 <div onClick={hide} className="fixed top-0 left-0 w-screen h-screen opacity-40 bg-black"></div>
             </div>
+            <Loading loading={loading} />
         </>
     )
 }

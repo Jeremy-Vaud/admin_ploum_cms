@@ -25,7 +25,7 @@ export default function PageUsers(props) {
     return (
         <>
             <h1 className="text-2xl text-center mb-6">Utilisateurs</h1>
-            <Table table="user" columns={columns} form={form} formUpdate={formUpdate} logOut={props.logOut}/>
+            <Table table="App\User" columns={columns} form={form} formUpdate={formUpdate} logOut={props.logOut}/>
         </>
     )
 }

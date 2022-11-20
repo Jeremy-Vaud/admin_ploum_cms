@@ -1,9 +1,12 @@
 import { useState } from "react"
 import trash from "../icons/trash-can-solid.svg"
+import Loading from "./Loading"
 import { urlApi } from "../settings"
 
 export default function ModalDelete(props) {
     const [visiblity, setVisibility] = useState("hidden")
+    const [loading, setLoading] = useState("hidden")
+
     function show() {
         setVisibility("")
     }
@@ -13,14 +16,17 @@ export default function ModalDelete(props) {
     }
 
     function deleteById() {
+        let formData = new FormData
+        formData.append("table", props.table)
+        formData.append("id", props.id)
+        formData.append("action", "delete")
+        setLoading("")
         fetch(urlApi, {
-            headers: {
-                "Content-Type": "application/json"
-            },
-            method: 'DELETE',
-            body: JSON.stringify(props)
+            method: 'POST',
+            body: formData
         })
             .then((response) => {
+                setLoading("hidden")
                 if (response.status === 404) {
                     throw new Error('not found')
                 } else if (response.status === 401) {
@@ -48,6 +54,7 @@ export default function ModalDelete(props) {
                 </div>
                 <div onClick={hide} className="fixed top-0 left-0 w-screen h-screen opacity-40 bg-black"></div>
             </div>
+            <Loading loading={loading}/>
         </>
     )
 }

@@ -3,12 +3,16 @@ import { v4 as uuidv4 } from 'uuid'
 import edit from "../icons/pencil-solid.svg"
 import FormCheckbox from "./FormCheckbox"
 import FormInput from "./FormInput"
+import FormTextarea from "./FormTextarea"
+import FormImage from "./FormImage"
+import Loading from "./Loading"
 import { urlApi } from "../settings"
 
 export default function ModalUpdate(props) {
     const [visibility, setVisibility] = useState("hidden")
     const formId = useState(uuidv4())
     const [inputs, setInputs] = useState([])
+    const [loading, setLoading] = useState("hidden")
 
     function show() {
         setVisibility("absolute")
@@ -55,19 +59,19 @@ export default function ModalUpdate(props) {
         let checkbox = form.querySelectorAll('input[type=checkbox]')
         let formData = new FormData(form)
         formData.append("table", props.table)
+        formData.append("action", "update")
+        setLoading("")
         checkbox.forEach((input) => {
             if (!input.checked) {
                 formData.append(input.name, "0")
             }
         })
-        let data = {};
-        formData.forEach((value, key) => data[key] = value);
         fetch(urlApi, {
-            headers: {
-                "Content-Type": "application/json"
-            }, method: 'PUT', body: JSON.stringify(data)
+            method: 'POST',
+            body: formData
         })
             .then((response) => {
+                setLoading("hidden")
                 if (response.status === 401) {
                     props.logOut()
                     throw new Error('Connection requise')
@@ -100,6 +104,14 @@ export default function ModalUpdate(props) {
                                 return (
                                     <FormCheckbox key={e.key} name={e.name} value={val} handleChange={handleChange} />
                                 )
+                            } else if (e.type === "textarea") {
+                                return (
+                                    <FormTextarea key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} />
+                                )
+                            } else if (e.type === "file") {
+                                return (
+                                    <FormImage key={e.key} name={e.name} type={e.type} warning={e.warning}  value={e.value} handleChange={handleChange} />
+                                )
                             } else {
                                 return (
                                     <FormInput key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} id={e.id} handleChange={handleChange} />
@@ -115,6 +127,7 @@ export default function ModalUpdate(props) {
                 </div>
                 <div onClick={hide} className="fixed top-0 left-0 w-screen h-screen opacity-40 bg-black"></div>
             </div>
+            <Loading loading={loading} />
         </>
     )
 }
