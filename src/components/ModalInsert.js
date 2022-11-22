@@ -4,8 +4,10 @@ import FormCheckbox from "./FormCheckbox"
 import FormInput from "./FormInput"
 import FormTextarea from "./FormTextarea"
 import FormImage from "./FormImage"
+import FormSelect from "./FormSelect"
 import Loading from "./Loading"
 import { urlApi } from "../settings"
+
 
 
 export default function ModalInsert(props) {
@@ -97,6 +99,7 @@ export default function ModalInsert(props) {
                 <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] p-10 z-20 bg-white w-[300px] md:w-[500px] max-h-[80%] overflow-auto">
                     <form id={formId} onSubmit={(e) => add(e)} method="post">
                         {inputs.map(e => {
+
                             if (e.type === "checkbox") {
                                 return (
                                     <FormCheckbox key={e.key} name={e.name} value={false} handleChange={handleChange} />
@@ -105,10 +108,16 @@ export default function ModalInsert(props) {
                                 return (
                                     <FormTextarea key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} />
                                 )
-                            } else if (e.type === "file") {
+                            } else if (e.type === "image") {
                                 return (
                                     <FormImage key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} />
                                 )
+                            } else if (e.type === "select" && props.dataSelect[e.name]){
+                                console.log(props.dataSelect[e.name])
+                                return (
+                                    <FormSelect key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} dataSelect={props.dataSelect[e.name]}/>                               
+                                )
+                  
                             } else {
                                 return (
                                     <FormInput key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} />

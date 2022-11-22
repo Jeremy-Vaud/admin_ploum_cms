@@ -6,6 +6,7 @@ export default function Navbar(props) {
         // Pages spécifique à ploum studio
         { name: 'Projets', href: '/projects' },
         { name: 'Tags', href: '/tags' },
+        { name: 'Accueil', href: '/Accueil' },
     ]
     return (
         <div className='flex'>

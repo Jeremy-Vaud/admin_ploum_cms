@@ -12,6 +12,7 @@ export default function Table(props) {
     const [sortState, setSortState] = useState([])
     const [hiddenRows, setHiddenRows] = useState({})
     const [loading, setLoading] = useState("hidden")
+    const [dataSelect, setDataSelect] = useState({})
 
 
     function initSortState() {
@@ -94,7 +95,7 @@ export default function Table(props) {
             })
             if (find) {
                 json[row.id] = false
-            }else {
+            } else {
                 json[row.id] = true
             }
         })
@@ -103,15 +104,15 @@ export default function Table(props) {
 
     useEffect(() => {
         setLoading("")
-        fetch( urlApi+'?table=' + props.table + '&id=all')
+        fetch(urlApi + '?table=' + props.table + '&id=all')
             .then((response) => {
                 setLoading("hidden")
                 if (response.status === 404) {
                     throw new Error('not found')
-                } else if(response.status === 401) {
+                } else if (response.status === 401) {
                     props.logOut()
                     throw new Error('Connection requise')
-                }else if (!response.ok) {
+                } else if (!response.ok) {
                     throw new Error('response not ok')
                 }
                 return response.json()
@@ -125,20 +126,58 @@ export default function Table(props) {
             })
     }, [])
 
+    function loadSelect(table,name,key) {
+        setLoading("")
+        fetch(urlApi + '?table=' + table + '&id=all')
+            .then((response) => {
+                setLoading("hidden")
+                if (response.status === 404) {
+                    throw new Error('not found')
+                } else if (response.status === 401) {
+                    props.logOut()
+                    throw new Error('Connection requise')
+                } else if (!response.ok) {
+                    throw new Error('response not ok')
+                }
+                return response.json()
+            })
+            .then((response) => {
+                let copyDataSelect = dataSelect;
+                let value = [];
+                response.map((e) => {
+                    value.push({value:e.id,name:e[key]})
+                })
+                copyDataSelect[name] = value
+                setDataSelect(copyDataSelect)
+     
+            })
+            .catch((e) => {
+                console.log(e.message)
+            })
+    }
+
+    useEffect(() => {
+        props.form.map((e) => {
+            if (e.type === "select") {
+                loadSelect(e.table,e.name,e.key)
+            }
+        })
+    }, [])
+
     return (
         <>
             <div className="flex justify-between items-center mb-4">
-                <ModalInsert form={props.form} table={props.table} insert={insert} logOut={props.logOut}/>
+                <ModalInsert form={props.form} table={props.table} insert={insert} logOut={props.logOut} dataSelect={dataSelect}/>
                 <TableSearch search={search} />
             </div>
             <table className="w-full">
                 <TableHead sort={sort} columns={props.columns} sortState={sortState} deleteRow={deleteRow} />
                 <tbody>
                     {
-                    data ? data.map(e => <TableRow key={uuidv4()} table={props.table} data={e} columns={props.columns} deleteRow={deleteRow} formUpdate={props.formUpdate} updateRow={updateRow} hidden={hiddenRows[e.id]} logOut={props.logOut}/>) : null}
+                        data ? data.map(e => <TableRow key={uuidv4()} table={props.table} data={e} columns={props.columns} deleteRow={deleteRow} formUpdate={props.formUpdate} updateRow={updateRow} hidden={hiddenRows[e.id]} logOut={props.logOut} dataSelect={dataSelect}/>) : null}
                 </tbody>
             </table>
-            <Loading loading={loading}/>
+            <Loading loading={loading} />
         </>
     )
 }

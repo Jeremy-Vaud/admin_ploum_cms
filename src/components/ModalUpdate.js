@@ -5,6 +5,7 @@ import FormCheckbox from "./FormCheckbox"
 import FormInput from "./FormInput"
 import FormTextarea from "./FormTextarea"
 import FormImage from "./FormImage"
+import FormSelect from "./FormSelect"
 import Loading from "./Loading"
 import { urlApi } from "../settings"
 
@@ -108,9 +109,14 @@ export default function ModalUpdate(props) {
                                 return (
                                     <FormTextarea key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} />
                                 )
-                            } else if (e.type === "file") {
+                            } else if (e.type === "image") {
                                 return (
-                                    <FormImage key={e.key} name={e.name} type={e.type} warning={e.warning}  value={e.value} handleChange={handleChange} />
+                                    <FormImage key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} />
+                                )
+                            } else if (e.type === "select" && props.dataSelect[e.name]) {
+                                console.log(props.dataSelect[e.name])
+                                return (
+                                    <FormSelect key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} dataSelect={props.dataSelect[e.name]} />
                                 )
                             } else {
                                 return (

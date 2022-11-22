@@ -7,6 +7,7 @@ import NotFound from './pages/NotFound'
 // Pages spécifique à ploum studio
 import PageProjects from './pages/PageProjects'
 import PageTags from './pages/PageTags'
+import PageAcceuil from './pages/PageAccueil'
 
 export function App() {
     const [isConnect,setIsConnect] = useState(true)
@@ -26,6 +27,7 @@ export function App() {
                     <Route path='/users' element={isConnect ? <PageUsers logOut={logOut} /> : <PageLogin logIn={logIn}/>} />
                     <Route path='/projects' element={isConnect ? <PageProjects logOut={logOut} /> : <PageProjects logIn={logIn}/>} />
                     <Route path='/tags' element={isConnect ? <PageTags logOut={logOut} /> : <PageTags logIn={logIn}/>} />
+                    <Route path='/Accueil' element={isConnect ? <PageAcceuil logOut={logOut} /> : <PageAcceuil logIn={logIn}/>} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>
             </Navbar>

@@ -33,7 +33,7 @@ export default function FormImage(props) {
                     </div>
                 </>
                 :
-                <input type={props.type} name={props.name} id={id} onChange={props.handleChange} accept="image/*" className="w-[100%] file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-yellow-600  hover:file:bg-yellow-500 file:cursor-pointer" />}
+                <input type="file" name={props.name} id={id} onChange={props.handleChange} accept="image/*" className="w-[100%] file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-yellow-600  hover:file:bg-yellow-500 file:cursor-pointer" />}
         </div>
     )
 }

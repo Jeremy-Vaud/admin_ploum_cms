@@ -6,14 +6,14 @@ export default function PageProjects(props) {
     ]
 
     const form = [
-        { name: "vignette", type: "file" },
+        { name: "vignette", type: "image" },
         { name: "titre", type: "text" },
         { name: "description", type: "textarea" },
         { name: "url", type: "texte" }
     ]
 
     const formUpdate = [
-        { name: "vignette", type: "file" },
+        { name: "vignette", type: "image" },
         { name: "titre", type: "text" },
         { name: "description", type: "textarea" },
         { name: "url", type: "texte" }
