@@ -24,14 +24,25 @@ export default function Table(props) {
     function sort(e) {
         setData(
             [...data].sort((a, b) => {
-                if (a[e] < b[e]) {
+                let c = a[e]
+                let d = b[e]
+                if(typeof a[e] === "object") {
+                    for (var i = 0; i < props.columns.length; i++) {
+                        if(props.columns[i].name === e) {
+                            c= a[e][props.columns[i].key]
+                            d = b[e][props.columns[i].key]
+                            break;
+                        }
+                    }
+                }
+                if (c < d) {
                     if (sortState[e] === "sort") {
                         return 1
                     } else {
                         return -1
                     }
                 }
-                if (a[e] > b[e]) {
+                if (c > d) {
                     if (sortState[e] === "sort") {
                         return -1
                     } else {
@@ -89,7 +100,14 @@ export default function Table(props) {
         data.map((row) => {
             let find = false
             props.columns.map((col) => {
-                if (row[col.name].indexOf(val) !== -1) {
+                let name
+                if(typeof row[col.name] === 'object') {
+                    name = String(row[col.name][col.key])
+
+                } else {
+                    name = String(row[col.name])
+                }
+                if (name.indexOf(val) !== -1) {
                     find = true;
                 }
             })

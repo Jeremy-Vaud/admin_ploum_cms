@@ -113,7 +113,6 @@ export default function ModalInsert(props) {
                                     <FormImage key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} />
                                 )
                             } else if (e.type === "select" && props.dataSelect[e.name]){
-                                console.log(props.dataSelect[e.name])
                                 return (
                                     <FormSelect key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} dataSelect={props.dataSelect[e.name]}/>                               
                                 )

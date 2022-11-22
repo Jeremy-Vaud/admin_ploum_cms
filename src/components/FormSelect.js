@@ -11,7 +11,7 @@ export default function FormSelect(props) {
             <select name={props.name} id={id} onChange={props.handleChange} className="border border-gray-800 w-[100%]" value={props.value.id}>
                 {props.dataSelect.map((e) => {
                     return (
-                        <option value={e.value}>{e.name}</option>
+                        <option value={e.value} key={uuidv4()}>{e.name}</option>
                     )
                 })}
             </select>
