@@ -9,14 +9,16 @@ export default function PageProjects(props) {
         { name: "vignette", type: "image" },
         { name: "titre", type: "text" },
         { name: "description", type: "textarea" },
-        { name: "url", type: "texte" }
+        { name: "url", type: "texte" },
+        { name: "tag", type:"selectMulti", table:"Model\\Tag", key:"nom"}
     ]
 
     const formUpdate = [
         { name: "vignette", type: "image" },
         { name: "titre", type: "text" },
         { name: "description", type: "textarea" },
-        { name: "url", type: "texte" }
+        { name: "url", type: "texte" },
+        { name: "tag", type:"selectMulti", table:"Model\\Tag", key:"nom"}
     ]
 
     return (

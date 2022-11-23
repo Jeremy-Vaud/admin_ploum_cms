@@ -6,6 +6,7 @@ import FormInput from "./FormInput"
 import FormTextarea from "./FormTextarea"
 import FormImage from "./FormImage"
 import FormSelect from "./FormSelect"
+import FormSelectMulti from "./FormSelectMulti"
 import Loading from "./Loading"
 import { urlApi } from "../settings"
 
@@ -117,7 +118,18 @@ export default function ModalUpdate(props) {
                                 return (
                                     <FormSelect key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} dataSelect={props.dataSelect[e.name]} />
                                 )
-                            } else {
+                            } else if(e.type === "selectMulti" && props.dataSelect[e.name]) {
+                                let table;
+                                for (let i = 0; i < props.formUpdate.length; i++) {
+                                    if(props.formUpdate[i].name === e.name) {
+                                        table = props.formUpdate[i].table
+                                        break
+                                    }
+                                }
+                                return (
+                                    <FormSelectMulti key={e.key} name={e.name} type={e.type} warning={e.warning} value={props.data[table]} dataSelect={props.dataSelect[e.name]} table={table}/>  
+                                )
+                                } else {
                                 return (
                                     <FormInput key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} id={e.id} handleChange={handleChange} />
                                 )

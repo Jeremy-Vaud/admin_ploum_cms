@@ -176,7 +176,7 @@ export default function Table(props) {
 
     useEffect(() => {
         props.form.map((e) => {
-            if (e.type === "select") {
+            if (e.type === "select" || e.type === "selectMulti") {
                 loadSelect(e.table,e.name,e.key)
             }
         })

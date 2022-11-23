@@ -4,7 +4,6 @@ import ModalUpdate from './ModalUpdate';
 
 export default function TableRow(props) {
     if(!props.hidden) {
-
     return (
         <tr>
             <td className='p-3'>

@@ -5,6 +5,7 @@ import FormInput from "./FormInput"
 import FormTextarea from "./FormTextarea"
 import FormImage from "./FormImage"
 import FormSelect from "./FormSelect"
+import FormSelectMulti from "./FormSelectMulti"
 import Loading from "./Loading"
 import { urlApi } from "../settings"
 
@@ -99,7 +100,6 @@ export default function ModalInsert(props) {
                 <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] p-10 z-20 bg-white w-[300px] md:w-[500px] max-h-[80%] overflow-auto">
                     <form id={formId} onSubmit={(e) => add(e)} method="post">
                         {inputs.map(e => {
-
                             if (e.type === "checkbox") {
                                 return (
                                     <FormCheckbox key={e.key} name={e.name} value={false} handleChange={handleChange} />
@@ -114,9 +114,20 @@ export default function ModalInsert(props) {
                                 )
                             } else if (e.type === "select" && props.dataSelect[e.name]){
                                 return (
-                                    <FormSelect key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} dataSelect={props.dataSelect[e.name]}/>                               
+                                    <FormSelect key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} dataSelect={props.dataSelect[e.name]} />                               
+                                )                
+                            } else if(e.type === "selectMulti" && props.dataSelect[e.name]) {
+                                let table;
+                                for (let i = 0; i < props.form.length; i++) {
+                                    if(props.form[i].name === e.name) {
+                                        table = props.form[i].table
+                                        break
+                                    }
+                                }
+                                let value = []
+                                return (
+                                    <FormSelectMulti key={e.key} name={e.name} type={e.type} warning={e.warning} value={value} dataSelect={props.dataSelect[e.name]} table={table}/>  
                                 )
-                  
                             } else {
                                 return (
                                     <FormInput key={e.key} name={e.name} type={e.type} warning={e.warning} value={e.value} handleChange={handleChange} />
