@@ -10,7 +10,7 @@ import PageTags from './pages/PageTags'
 import PageAcceuil from './pages/PageAccueil'
 
 export function App() {
-    const [isConnect,setIsConnect] = useState(true)
+    const [isConnect,setIsConnect] = useState(false)
 
     function logIn() {
         setIsConnect(true)
@@ -24,10 +24,10 @@ export function App() {
         <BrowserRouter>
             <Navbar>
                 <Routes>
-                    <Route path='/users' element={isConnect ? <PageUsers logOut={logOut} /> : <PageLogin logIn={logIn}/>} />
-                    <Route path='/projects' element={isConnect ? <PageProjects logOut={logOut} /> : <PageProjects logIn={logIn}/>} />
-                    <Route path='/tags' element={isConnect ? <PageTags logOut={logOut} /> : <PageTags logIn={logIn}/>} />
-                    <Route path='/Accueil' element={isConnect ? <PageAcceuil logOut={logOut} /> : <PageAcceuil logIn={logIn}/>} />
+                    <Route path='/admin/users' element={isConnect ? <PageUsers logOut={logOut} /> : <PageLogin logIn={logIn}/>} />
+                    <Route path='/admin/projects' element={isConnect ? <PageProjects logOut={logOut} /> : <PageLogin logIn={logIn}/>} />
+                    <Route path='/admin/tags' element={isConnect ? <PageTags logOut={logOut} /> : <PageLogin logIn={logIn}/>} />
+                    <Route path='/admin/Accueil' element={isConnect ? <PageAcceuil logOut={logOut} /> : <PageLogin logIn={logIn}/>} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>
             </Navbar>

@@ -2,11 +2,11 @@ import { NavLink } from 'react-router-dom'
 
 export default function Navbar(props) {
     const navigation = [
-        { name: 'Utilisateurs', href: '/users' },
+        { name: 'Utilisateurs', href: '/admin/users' },
         // Pages spécifique à ploum studio
-        { name: 'Projets', href: '/projects' },
-        { name: 'Tags', href: '/tags' },
-        { name: 'Accueil', href: '/Accueil' },
+        { name: 'Projets', href: '/admin/projects' },
+        { name: 'Tags', href: '/admin/tags' },
+        { name: 'Accueil', href: '/admin/accueil' },
     ]
     return (
         <div className='flex'>
