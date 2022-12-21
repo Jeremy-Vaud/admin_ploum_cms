@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom'
 
 export default function Navbar(props) {
     const navigation = [
+        { name: 'Home', href: '/admin' },
         { name: 'Utilisateurs', href: '/admin/users' },
         // Pages spécifique à ploum studio
         { name: 'Projets', href: '/admin/projects' },
@@ -17,6 +18,7 @@ export default function Navbar(props) {
                             <NavLink
                                 to={e.href}
                                 key={e.name}
+                                end={true}
                                 className={({ isActive }) => {
                                     return 'block no-underline ' + (isActive ? 'text-yellow-600 mb-2' : 'text-gray-300 mb-2')
                                 }}>

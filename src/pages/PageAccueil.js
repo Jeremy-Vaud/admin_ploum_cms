@@ -18,7 +18,7 @@ export default function PageAcceuil(props) {
 
     return (
         <>
-            <h1 className="text-2xl text-center mb-6">Utilisateurs</h1>
+            <h1 className="text-2xl text-center mb-6">Accueil</h1>
             <Table table="Model\Accueil" columns={columns} form={form} formUpdate={formUpdate} logOut={props.logOut} mode="detail"/>
         </>
     )
