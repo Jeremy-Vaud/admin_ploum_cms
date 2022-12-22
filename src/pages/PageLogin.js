@@ -5,6 +5,7 @@ import { urlApi } from "../settings";
 export default function PageLogin(props) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [warning, setWarning] = useState("");
 
     function handleChange(e) {
         if(e.target.name === "email") {
@@ -31,7 +32,7 @@ export default function PageLogin(props) {
                 }                         
             })
             .then((response) => {
-                console.log(response);
+                setWarning(response.warning)
             })
         }
 
@@ -40,6 +41,7 @@ export default function PageLogin(props) {
             <h1 className="text-2xl text-center mb-6">login</h1>
             <div className="flex justify-center">
                 <div className="min-w-[300px]">
+                    <p className="h-8 text-red-600">{warning}</p>
                     <form id="logInForm" >
                         <FormInput key="email" name="email" type="email" warning={null} value={email} handleChange={handleChange} />
                         <FormInput key="password" name="password" type="password" warning="" value={password} handleChange={handleChange} />

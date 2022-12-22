@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { urlApi } from "./settings"
 import Navbar from './components/Navbar'
 import PageUsers from './pages/PageUsers'
 import PageHome from './pages/PageHome'
@@ -11,7 +12,7 @@ import PageTags from './pages/PageTags'
 import PageAcceuil from './pages/PageAccueil'
 
 export function App() {
-    const [isConnect,setIsConnect] = useState(true)
+    const [isConnect,setIsConnect] = useState(false)
 
     function logIn() {
         setIsConnect(true)
@@ -21,9 +22,33 @@ export function App() {
         setIsConnect(false)
     }
 
+    useEffect(() => {
+        fetch(urlApi + '?isLog=1')
+            .then((response) => {
+                if (response.status === 200) {
+                    setIsConnect(true)
+                }
+            })
+            .catch((e) => {
+                console.log(e.message)
+            })
+    }, [])
+
+    function sendLogOut() {
+        fetch(urlApi + '?logOut=1')
+            .then((response) => {
+                if (response.status === 200) {
+                    setIsConnect(false);
+                }
+            })
+            .catch((e) => {
+                console.log(e.message)
+            })
+    }
+
     return (
         <BrowserRouter>
-            <Navbar>
+            <Navbar sendLogOut={sendLogOut}>
                 <Routes>
                     <Route path='/admin' element={isConnect ? <PageHome logOut={logOut} /> : <PageLogin logIn={logIn}/>} />
                     <Route path='/admin/users' element={isConnect ? <PageUsers logOut={logOut} /> : <PageLogin logIn={logIn}/>} />

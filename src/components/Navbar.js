@@ -26,6 +26,7 @@ export default function Navbar(props) {
                             </NavLink>
                         )}
                     </nav>
+                    <p className='mt-6 cursor-pointer text-gray-300 mb-2' onClick={props.sendLogOut}>Se déconnecter</p>
             </aside>
             <div className='p-3 h-screen w-full'>
                 {props.children}
